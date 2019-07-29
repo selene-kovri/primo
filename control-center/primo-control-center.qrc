@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>primo-control-center.qml</file>
+        <file>ui/ToolTip.qml</file>
+        <file>ui/AboutWindow.qml</file>
+        <file>content/fontawesome.otf</file>
+        <file>content/arrow4.png</file>
+        <file>content/monero48.png</file>
+        <file>content/spinning-light3.png</file>
+    </qresource>
+</RCC>

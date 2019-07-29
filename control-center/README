@@ -1,0 +1,83 @@
+This is the Primo control center.
+
+Copyright 2019 selene
+Primo is GPL v3+. See COPYING for details.
+
+Primo offers a user interface to mine Monero to the user's choice of websites
+according to information relayed to it by browser extensions.
+
+
+ * BUILDING
+
+Primo uses Qt/QML, and will need basic Qt/QML widgets. It also needs boost.
+
+Build with these commands:
+
+  mkdir build
+  cd build
+  qmake .. # might be named qmake-qt5
+  make
+
+When built, you should copy the native messaging file to your browser's directory:
+
+cp primo.control.center.json ~/.mozilla/native-messaging-hosts
+
+The Primo Firefox extension (installed separately) will now be able to communicate
+with the Primo control center.
+
+
+ * PROTOCOL DOCUMENTATION
+
+Primo uses browsers' "native messaging" system with the following messages:
+
+    Incoming messages (from the browser):
+
+        cmd: site
+            query:
+                mining_page: string
+                location: string (optional)
+                name: string (optional)
+                payment: integer (optional)
+                credits: integer (optional)
+                hashing_blob: string (optional)
+                difficulty: integer (optional)
+                height: integer (optional)
+                top_hash: string (optional)
+            response:
+                empty
+
+        cmd: sign
+            query:
+                mining_page: string
+            response:
+                signature: string
+
+        cmd: forget_all
+            query:
+                empty
+            response:
+                empty
+
+        cmd: summon
+            query:
+                empty
+            response:
+                empty
+
+    Outgoing messages (to the browser):
+
+        cmd: info
+            query:
+                mining_page: string
+            response:
+                empty
+
+        cmd: nonce
+            query:
+                mining_page: string
+                nonce: integer
+                top_hash: string
+            response:
+                empty
+
+  

@@ -1,0 +1,7 @@
+{
+  "name": "primo.control.center",
+  "description": "Primo control center",
+  "path": "/home/user/src/primo/primo-control-center/build/primo-control-center",
+  "type": "stdio",
+  "allowed_extensions": [ "primo@example.org" ]
+}
