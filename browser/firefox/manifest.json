@@ -1,0 +1,38 @@
+{
+  "manifest_version": 2,
+  "name": "Primo",
+  "version": "0.1",
+
+  "description": "Privately pays for website access using Monero mining",
+
+  "applications": {
+    "gecko": {
+      "id": "primo@example.org",
+      "strict_min_version": "50.0"
+    }
+  },
+
+  "icons": {
+    "48": "icons/monero48.png",
+    "96": "icons/monero96.png"
+  },
+
+ "permissions": [
+    "<all_urls>",
+    "activeTab",
+    "webRequest",
+    "webRequestBlocking",
+    "nativeMessaging",
+    "notifications",
+    "tabs"
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/monero48.png",
+    "default_title": "Primo"
+  },
+
+  "background": {
+    "scripts": ["primo.js"]
+  }
+}
