@@ -1,0 +1,78 @@
+This is an Apache module that allows users to pay for access using Monero mining.
+You can allow access to any part of your website against Monero mining.
+You can also offer the user an optional ad-free page if the user mines.
+
+
+Build with:
+
+  apxs  -a -c mod_primo.c cJSON/cJSON*.c
+
+
+Install with:
+
+  sudo cp .libs/mod_primo.so /etc/httpd/modules/
+  sudo cp 12.primo.conf /etc/httpd/conf.modules.d/12.primo.conf
+
+
+Edit the Apache configuration:
+
+  sudo vi /etc/httpd/conf.modules.d/12.primo.conf
+
+    PrimoMoneroHost is the URL where your Monero dameon is listening for RPC connections. That particular port should not be accessible from the outside.
+    PrimoMiningPage is the URL where mod_primo will be listening to user requests, it can be anything you like, as long as this file is within one of the locations controlled by mod_primo (see below for locations information).
+    PrimoName is the name of your website, which the users should see.
+    PrimoPassthrough lets Apache continue serving the request anyway if the user's balance is not enough after adding a "X-Primo-Unpaid: 1" header to the response (Apache may choose to include ads only if this header is set, for example)
+
+  sudo vi /etc/httpd/conf/httpd.conf
+
+    Add a location for every section of your website you want to be controlled by mod_primo:
+
+    <Location "/primo/">
+      SetHandler primo-handler
+      PrimoCost 1
+    </Location>
+    <Location "/primo/premium/">
+      SetHandler primo-handler
+      PrimoCost 2
+    </Location>
+
+    Here, "/primo" means that any URL on your website in /primo/ will be controlled by mod_primo.
+    PrimoCost is how many credits are required to access any resource in this location.
+    You can specify any number of such locations, with different costs for each, but they
+    should all be contained within a main location.
+    You should ensure that the URL specified in PrimoMiningPage is within such a location.
+
+
+Restart Apache (for sytemd):
+
+  sudo systemctl restart httpd
+
+
+
+The user will have to be running the Primo client software to be able to pay this way.
+If the user is not running this software, or if the user does not have enough balance
+to pay their way, the request wil be denied with error 402 (payment required).
+
+
+mod_primo expects the following headers on requests:
+
+  X-Primo-Signature: a signature from a user authenticating the request
+  X-Primo-Nonce: data from a miner claiming new credits
+  X-Primo-TopHash: top hash the miner mined on when sending a nonce
+  X-Primo-Cookie: Value the miner received along with the hashing blob it's mining on
+
+mod_primo adds the following headers on responses:
+
+  X-Primo-Payment: the credit cost for the resource
+  X-Primo-MiningPage: the URL to the mining page set up in the configuration
+  X-Primo-Credits: the user's current credit balance
+  X-Primo-Unpaid: set if the user's balance is not enough and PrimoPassthrough is set in the configuration
+
+  X-Primo-Name: the name of your website as set up in the configuration (mining page only)
+  X-Primo-Location: the path on your website where the pay-for-access applies
+  X-Primo-Difficulty: the mining difficulty (mining page only)
+  X-Primo-CreditsPerHashFound: how many credits are awarded for a succesful find while mining (mining page only)
+  X-Primo-Height: the current height of the Monero blockchain (mining page only)
+  X-Primo-TopHash: the hash for the top block on the Monero blockchain (mining page only)
+  X-Primo-HashingBlob: the mining data for miners to use (mining page only)
+  X-Primo-Cookie: a value the miner should send back when sending a nonce
