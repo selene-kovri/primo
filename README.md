@@ -1,7 +1,7 @@
 Primo - Private Monero payments
 
 
-Primo (Private Monero payments) is a protocol and set of software which enables a party to require paynent for service.
+Primo (Private Monero payments) is a protocol and set of software which enables a party to require payment for service.
 Users will mine Monero and submit shares to the party like to a pool. The party (eg, a web site) uses such mining as payment,
 and supplies the service based on those payments. Monero blocks will be found from time to time, and be the party's actual
 income.
