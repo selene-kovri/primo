@@ -5,7 +5,7 @@ You can also offer the user an optional ad-free page if the user mines.
 
 Build with:
 
-  apxs  -a -c mod_primo.c cJSON/cJSON*.c
+  apxs -lcurl -a -c mod_primo.c cJSON/cJSON*.c
 
 
 Install with:
